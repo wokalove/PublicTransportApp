@@ -4,7 +4,7 @@ bus and tram routes app
 Aplikacja służąca do wyszukiwania połączeń autobusowych i tramwajowych MPK Kraków w języku Python
 
 Krótki opis działania:
-1.Użytkownik wpisuje gdzie wsiada i dokąd jedzie
+1. Użytkownik wpisuje gdzie wsiada i dokąd jedzie
 2. Aplikacja wyszukuje dojazdy bezpośrednie jak i pośrednie
 
 bezpośrednie:
