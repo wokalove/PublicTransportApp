@@ -17,6 +17,7 @@ pośrednie:
 - pokazuje przystanki od celu pośredniego do ostatecznego celu
 
 W aplikacji skorzystano z bazy danych MPK, sqlite3, bibiloteki tkinter.
+Aplikacja nie uwzględnia korzystania z czasów odjazdów i przyjazdów z racji tego, że w tej bazie MPK ich brakuje.
 
 -----------------------------------------------------------------------------
 Application which is used for finding MPK Cracow bus and tram connections in Python's language.
@@ -34,4 +35,4 @@ indirect:
 - shows stops respectively which leads to our intermidiate destination
 - shows stops respectively which leads from our intermidiate destination to our final destination
 
-
+App doesn't include time departures and arrivals usage because of not complited data base from MPK Cracov.
