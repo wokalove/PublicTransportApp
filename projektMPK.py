@@ -1,7 +1,6 @@
 import sqlite3 
 import numpy as np
 
-
 # define Python user-defined exceptions
 class Error(Exception):
    """Base class for other exceptions"""
@@ -50,8 +49,6 @@ def busStopsDisplay(busStops,inpFrom,inpTo):
         print(finalStops[::-1])
     else:
         print(finalStops)
-           
-        
           
 def connectToData():    
     connection = sqlite3.connect("rozklady.sqlite3") 
@@ -79,7 +76,6 @@ def connectToData():
         
         busStop=crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(chooseLine,))
         returnBusStops= crsr.fetchall()  
-        
         
         busStops=[]
         print("Bus stops leading to your destination:")
