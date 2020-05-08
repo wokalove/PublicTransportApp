@@ -24,7 +24,7 @@ Aplikacja pyta również, czy jest studentem czy dorosłym i na końcu oblicza k
 
 
 W tej aplikacji skorzystano z bazy danych MPK, bibliotek: sqlite3, tkinter. Stosuję również w programie podstawowe zapytania do bazy (MySQL).
-Aplikacja __nie uwzględnia__ korzystania z czasów odjazdów i przyjazdów z racji tego, że w tej bazie MPK ich brakuje.
+Aplikacja __nie uwzględnia__ korzystania z czasów odjazdów i przyjazdów z racji tego, że w bazie MPK, którą pobrałam ich brakuje.
 Aplikacja będzie również napisana w języku angielskim w celu doskonalenia znajomości od strony techniczno -programistycznej tego języka.
 
 
