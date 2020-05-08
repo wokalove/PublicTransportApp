@@ -4,7 +4,7 @@ połączenia autobusowe i tramwajowe, bus and tram routes app
 PL
 -
 
-##Opis działania:##
+**Opis działania:**
 
 
 Aplikacja służąca do wyszukiwania połączeń autobusowych i tramwajowych MPK Kraków w języku Python.
@@ -12,7 +12,7 @@ Po uruchomieniu programu pojawia się okno  możliwością wyszukiwania połącz
 Wybieramy, którą linią chcemy dojechać do celu i pokazują nam się kolejno przystanki autobusowe po drodze do końcowej stacji.
 Aplikacja pyta również, czy jest studentem czy dorosłym i na końcu oblicza koszty podróży. 
 
-##Testy
+**Testy**
 
 1. Wprowadzenie danych (stacja początkowa i końcowa) przez uzytkownika i sprawdzenie czy istnieją w bazie MPK Kraków - w przeciwnym wypadku aplikacja "upomina", że mogły zostać wpisane niepoprawne dane.
 2. Wybranie rodzaju biletu - możliwe warianty: student lub dorosły. Jeśli użytkownik nie wybierze żadnego z nich wypisuje się komunikat o wybraniu nieistniejącej opcji i pojawia się możliwość ponownego wyboru.
