@@ -2,7 +2,6 @@
 połączenia autobusowe i tramwajowe, bus and tram routes app
 
 PL
--
 
 Opis działania: 
 -
@@ -29,7 +28,6 @@ Aplikacja będzie również napisana w języku angielskim w celu doskonalenia zn
 
 -----------------------------------------------------------------------------
 EN
--
 
 Application which is used for finding MPK Cracow bus and tram connections in Python's language.
 
