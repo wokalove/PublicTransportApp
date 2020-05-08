@@ -4,7 +4,7 @@ połączenia autobusowe i tramwajowe, bus and tram routes app
 PL
 -
 
-##Opis działania: 
+##Opis działania:##
 
 
 Aplikacja służąca do wyszukiwania połączeń autobusowych i tramwajowych MPK Kraków w języku Python.
