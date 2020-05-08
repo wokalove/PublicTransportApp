@@ -18,7 +18,7 @@ Aplikacja pyta również, czy jest studentem czy dorosłym i na końcu oblicza k
 
 2. Wybranie rodzaju biletu - możliwe warianty: student lub dorosły. Jeśli użytkownik nie wybierze żadnego z nich wypisuje się komunikat o wybraniu nieistniejącej opcji i pojawia się możliwość ponownego wyboru.
 
-3.Na podstawie wpisanych danych przez użytkownika wyszukiwanie numerów linii pojazdów w bazie danych.
+3. Na podstawie wpisanych danych przez użytkownika wyszukiwanie numerów linii pojazdów w bazie danych.
 
 4. Wsciśnięcie przycisku odpowiadającego za szukanie - wyświetlenie na ekran możliwych linii autobusowych/tramwajowych prowadzących do celu. 
 
