@@ -5,7 +5,7 @@ Aplikacja służąca do wyszukiwania połączeń autobusowych i tramwajowych MPK
 
 Krótki opis działania:
 1. Użytkownik wpisuje gdzie wsiada i dokąd jedzie
-2. Aplikacja wyszukuje dojazdy bezpośrednie jak i pośrednie
+2. Aplikacja wyszukuje dojazdy bezpośrednie jak i pośrednie z punktu A do B i z B do A ( " w tę i z powrotem")
 
 bezpośrednie:
 - którym tramawjem dojedziemy
@@ -24,7 +24,7 @@ Application which is used for finding MPK Cracow bus and tram connections in Pyt
 
 Shortened app description:
 1. User enters bus stop and destination
-2. App looks for direct and indirect tram/bus connections
+2. App looks for direct and indirect tram/bus connections from A to B and from B to A 
 
 direct:
 - shows which one bus/tram we should choose to reach our final destination
