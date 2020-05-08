@@ -1,4 +1,4 @@
-# połączenia MPK Kraków
+# Połączenia MPK Kraków
 połączenia autobusowe i tramwajowe, bus and tram routes app
 
 PL
