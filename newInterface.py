@@ -62,7 +62,9 @@ class Win2(Win1):
 		self.studentPlace = tk.Entry(self.master,bd=20)
 		self.studentPlace.place(x=220,y=100)
         
-		#self.labNew("Connection",100,120,20)
+		self.connectionLabel= tk.Label(self.master,text="Connection",bg = "black",fg = "white")
+		self.connectionLabel.place(x=180,y=200)
+		self.connectionLabel.config(font=("Courier",30))        
         
 		self.fromLabel= tk.Label(self.master,text="From:",bg = "black",fg = "white")
 		self.fromLabel.place(x=100,y=280)
@@ -87,11 +89,6 @@ class Win2(Win1):
 	def butnew(self, text, number, _class):
 		tk.Button(self.master, text = text,height = 4, width = 12,fg="blue",command= lambda: self.new_window(number, _class)).pack(side=tk.BOTTOM,pady=20)
 
-	def labelNew(self, text,x,y,font):
-		self.fromLabel= tk.Label(self.master,text=text,bg = "black",fg = "white")
-		self.fromLabel.place(x=x,y=y)
-		self.fromLabel.config(font=("Courier",font))
-		#tk.Button(self.master, text = text,height = 4, width = 12,fg="blue",command= lambda: self.new_window(number, _class)).pack(pady=20)
 
 class Win3(Win1):
 	def __init__(self, master, number):
