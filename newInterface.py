@@ -140,7 +140,6 @@ class Win3(Win1):
         self.show = tk.Button(self.master, text = f"Show",height = 1, width = 7,fg="red", command = lambda : self.connectToData)
         self.show.place(x=400,y=200)
         self.show.config(font=("Courier",15))
-        #self.show.pack(pady=10)
         
         self.textConnections = tk.Text(self.master,height = 15, width =40)
         self.textConnections.insert(tk.INSERT,"Przystanki")
