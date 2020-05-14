@@ -1,5 +1,6 @@
 import sqlite3 
 import numpy as np
+import json
 
 # define Python user-defined exceptions
 class Error(Exception):
@@ -29,7 +30,7 @@ def ticketCosts():
             raise Error
     except Error:
         print("Wrong input, try again!")
-        checkIfStudent()
+        ticketCosts()
     if choice in ["yes","no"]:
         finalCosts=np.sum(Traveler.journeyCosts)
         print("Your all travel costs:",finalCosts)
@@ -86,6 +87,100 @@ def connectToData():
         #obliczenie ceny biletu
         ticketCosts()
     else:
-        print("We don't have such connection")
+        print("Indirect connection!")
+        with open('graf.json',encoding="utf8") as json_file:
+            data = json.load(json_file)
+            newdict = making_graph_from_file_text(data)
+            shortestWay = find_shortest_path(newdict, inpFrom, inpTo)
+            fullPath = path_with_correct_lines(shortestWay,newdict)
+            message(shortestWay,fullPath,inpFrom,inpTo)
+
+
+def message(shortPath,longPath,From,To):
+    print("Path to your destination:" , shortPath)
+    print("\n")
+    print("You can reach your destination by lines:")
+    
+    shortPath = shortPath.split(', ')
+    shortPath = np.array(shortPath)
+    From = shortPath[0]
+    already = 0
+    for i in range(len(shortPath)-1):
         
+        
+        if(already == 0):
+            lines = np.intersect1d(longPath[shortPath[i]], longPath[shortPath[i+1]])
+            cor = longPath[shortPath[i]]
+        else:
+            lines = np.intersect1d(lines, longPath[shortPath[i+1]])
+            
+            
+        if (lines.size > 0):
+            cor = lines
+            already = 1
+            continue
+        
+        already = 0
+        To = shortPath[i+1]
+        
+        print(From," --> ",To," via lines: ",cor)
+        print()
+        
+        From = shortPath[i+1]
+            
+            
+def find_shortest_path(graph, start, end):
+        queue = []
+        dist = {start: [start]}
+        queue.append(start)
+        while queue:
+            at = queue.pop(0)
+            
+            for next in graph[at]:
+                if next not in dist:
+                    dist[next] = [dist[at], next]
+                    queue.append(next)
+                    
+        shortestWay = str(dist.get(end))
+        shortestWay = shortestWay.translate({ord(i): None for i in "[]'"})
+        return shortestWay
+
+def path_with_correct_lines(path,graph):
+    
+    fullPath = {}
+    
+    path = path.split(', ')
+    
+    for i in range(len(path) - 1):
+        findLn = graph[path[i]][path[i+1]]
+        fullPath.update({path[i]:findLn})
+    
+    fullPath.update({path[i+1]:[]})
+    
+    return fullPath
+            
+def making_graph_from_file_text(text):
+    
+    newdict = dict()
+    
+    for key,values in text.items():       
+        
+        for i in range(len(values) - 1):
+            first = str(values[i])
+            second = str(values[i+1])
+            first = first.translate({ord(i): None for i in "[]'"})
+            second = second.translate({ord(i): None for i in "[]'"})
+            if first != second:
+                if first in newdict:
+                    if second in newdict[first]:
+                        newdict[first][second].append(key)
+                    else:
+                        newdict[first].update({second:[key]})
+                else:
+                    newdict.update({first:{second:[key]}})
+        if second not in newdict:
+            newdict.update({second:{}})
+            
+    return newdict
+
 connectToData()

@@ -24,40 +24,19 @@ for i in returnNumbersLine:
 
 graf = dict()
 
-
-
-
 queue = []
 
-
-
-"""
+'''
 #Zapis JEDNOKROTNY słownika do pliku: {nr liniii: kolejne przystanki}
 for line in lineNumbers:
     busStop=crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(line,))
     returnBusStops= crsr.fetchall()  
     graf[line]=returnBusStops
     json.dump( graf, open( 'graf.json', 'w' ,encoding='utf8'),ensure_ascii=False )
-"""
-
-#print(graf)
+'''
 
 with open('graf.json',encoding="utf8") as json_file:
     data = json.load(json_file)
-
-
-
-
-'''
-dataRead=[]
-for d in data:
-    dataRead.append(str(i)[2:-3])
-'''
-
-
-
-# Driver Code
-
 
 
 #Same funckje:
@@ -121,7 +100,6 @@ def message(shortPath,longPath):
             already = 1
             continue
         
-        
         already = 0
         To = shortPath[i+1]
         
@@ -130,14 +108,7 @@ def message(shortPath,longPath):
         
         From = shortPath[i+1]
             
-
-            
-            
-            
-
-                      
-
-
+        
 def making_graph_from_file_text(text):
     
     newdict = dict()
@@ -165,8 +136,6 @@ def making_graph_from_file_text(text):
 
 
 #koniec samych funkcji
-
-
 
 #Main
 
