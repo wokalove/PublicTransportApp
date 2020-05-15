@@ -6,6 +6,9 @@ from PIL import Image, ImageTk
 from tkinter.messagebox import *
 import sqlite3 
 import numpy as np
+import subprocess
+import shlex
+
 
 class Win1:
     def __init__(self, master):
@@ -29,9 +32,13 @@ class Win1:
         self.butnew("Start", "2", Win2)
         self.quit = tk.Button(self.frame, text = f"Quit", command = self.close_window,height = 2, width = 10,fg="red")
         self.quit.config(font=("Courier",20))
+        
         self.quit.pack(side=tk.TOP,pady=20)
-
         self.frame.pack( padx=20, pady=20)
+
+    def showLines(self):
+        print( "click!")
+        
     def butnew(self, text, number, _class):
         b=tk.Button(self.frame, text = text,height = 2, width = 10,fg="red",command= lambda: self.combineFunc(self.new_window(number, _class),self.close_window))
         b.config(font=("Courier",20))
@@ -53,8 +60,6 @@ class Win1:
             for f in funcs:
                 f(*args,**kwargs)
         return combinedFunc
-    def printHello():
-        pass
         
 class Win2(Win1):
     def __init__(self, master, number):
@@ -63,13 +68,14 @@ class Win2(Win1):
         self.master.config(bg="black")
         self.master.geometry("600x600+300+10")
         self.master.resizable(False,False)
-
+        
         
         self.frame = tk.Frame(self.master,width=500, height=500, background="black")
         
         self.studentLabel= tk.Label(self.master,text="Are you a student?",bg = "black",fg = "white")
         self.studentLabel.place(x=160,y=50)
         self.studentLabel.config(font=("Courier",20))
+    
         
         self.studentPlace = tk.Entry(self.master,bd=20)
         self.studentPlace.place(x=220,y=100)
@@ -95,10 +101,16 @@ class Win2(Win1):
 
         self.butnew("Find connection", "2", Win3)
         self.frame.pack( padx=50, pady=200)
-        
+
     def new_window(self, number, _class, answers):
         self.new = tk.Toplevel(self.master)
         _class(self.new, number,answers) 
+        
+        
+    def showLines(self):
+        text=self.connectToData()
+        l1 = Label(self.master, text = text,font=("Courier",25),bg="white", fg="black")
+        l1.place(x=280,y=150, anchor="center")
         
     def getAns(self):
         ans=[]
@@ -108,17 +120,36 @@ class Win2(Win1):
         
         self.label = tk.Label(self.master)
         self.label.config(font=("Courier",25),text="Found connection",bg="black", fg="white")
-        self.label.pack(pady=10)
+        self.label.pack(pady=20)
         print(ans)
         return ans
 
     def butnew(self, text, number, _class):
-        b = tk.Button(self.master, text = text,height = 2, width = 20,fg="red",command= lambda: self.combineFunc(self.getAns(),self.new_window(number, _class,self.getAns())))
+        b = tk.Button(self.master, text = text,height = 2, width = 20,fg="red",command= lambda:self.new_window(number, _class,self.getAns()))
         b.config(font=("Courier",20))
         b.pack(side=tk.BOTTOM,pady=20)
+    
+    def connectToData(self):
+        connection = sqlite3.connect("rozklady.sqlite3") 
+    
+        crsr = connection.cursor() 
 
+        #wykonuje zapytanie w sql
+        numberLine=crsr.execute("SELECT DISTINCT LineName FROM StopDepartures WHERE StopName=? AND LineName IN (SELECT LineName from StopDepartures  where StopName=?) COLLATE NOCASE",(self.studentAns[1],self.studentAns[2],))
+        #zwraca wszystkie rekordy znalezione na wskutek zapytania
+        returnNumberLine= crsr.fetchall()  
+    
+        lineNumber=[]
+        for i in returnNumberLine: 
+            lineNumber.append(str(i)[2:-3])
+    
+        if not lineNumber == []:
+            #szukanie bezporedniego połączenia między stacjami
+            print("You can reach your destination by lines:")
+            print(lineNumber)
+        return lineNumber
 
-class Win3(Win1):
+class Win3(Win2):
     def __init__(self, master, number,studentAns):
         self.master = master
         self.master.geometry("600x600+300+10")
@@ -126,73 +157,41 @@ class Win3(Win1):
         self.master.config(bg="black")
         self.master.resizable(False,False)
         self.studentAns=studentAns
-        print("Answer",self.studentAns)
+        print("Answer:",self.studentAns)
         
-        var = tk.StringVar()
-        #var.set(lambda = self.connectToData)
         
         self.label = tk.Label(self.master)
-        self.label.config(font=("Courier",25),text="Found connection",bg="black", fg="white")
+        self.label.config(font=("Courier",25),text="Found connections",bg="black", fg="white")
         self.label.pack(pady=10)
         
-        self.showConnection = tk.Button(self.master,text="show",command=lambda:self.printHello)
-        self.showConnection.pack(pady=20)
+        b = tk.Button(self.master, text="Show Lines", command=self.showLines,height=1,width=15,fg="red",bg="white")
+        b.config(font=("Courier",20))
+        b.pack(pady=5)
         
-        self.labelLines = tk.Label(self.master)
-        self.labelLines.pack(pady=10)
-        
-        '''
-        self.textLines = tk.Text(self.master,height = 2, width =40)
-        self.textLines.insert(tk.INSERT,"Linie")
-        self.textLines.pack(pady=10)
-        '''
         self.labelTypeLine = tk.Label(self.master)
         self.labelTypeLine.config(font=("Courier",25),text="Type line from given above:",bg="black", fg="white")
-        self.labelTypeLine.pack(pady=10)
+        self.labelTypeLine.place(x=40,y=200)
         
         self.chooseLinePlace = tk.Entry(self.master,bd=20)
-        self.chooseLinePlace.pack(pady=10)
+        self.chooseLinePlace.place(x=220,y=270)
         
-        self.show = tk.Button(self.master, text = f"Show",height = 1, width = 7,fg="red", command = lambda : self.connectToData)
-        self.show.place(x=400,y=200)
+        self.show = tk.Button(self.master, text = f"Show Stops",height = 1, width = 10,fg="red", command = lambda : self.connectToData)
+        self.show.place(x=400,y=280)
         self.show.config(font=("Courier",15))
-        
+        '''
         self.textConnections = tk.Text(self.master,height = 15, width =40)
         self.textConnections.insert(tk.INSERT,"Przystanki")
         self.textConnections.pack(pady=10)
-        
+        '''
         self.quit = tk.Button(self.master, text = f"Quit",height = 1, width = 7,fg="red", command = self.close_window)
         self.quit.configure(font=("Courier",15))
         self.quit.place(x=250,y=530)
-        
-        def printHello(self):
-            self.labelLines.config(font=("Courier",25),text="cos",bg="red", fg="white")
-                    
-        def connectToData(self):
-            connection = sqlite3.connect("rozklady.sqlite3") 
-            crsr = connection.cursor() 
-            #wykonuje zapytanie w sql
-            numberLine=crsr.execute("SELECT DISTINCT LineName FROM StopDepartures WHERE StopName=? AND LineName IN (SELECT LineName from StopDepartures  where StopName=?) COLLATE NOCASE",(self.studentAns[1],self.studentAns[2],))
-            #zwraca wszystkie rekordy znalezione na wskutek zapytania
-            returnNumberLine= crsr.fetchall()  
-            #tablica do przechowywania numerów linii, które doprowadzą do celu
-            lineNumber=[]
-            for i in returnNumberLine:
-                lineNumber.append(str(i)[2:-3])
-                if not lineNumber == []:
-                    print("You can reach your destination by lines:")
-                    print(lineNumber)
-                    
-                    self.labelLines = tk.Label(self.master)
-                    self.labelLines.config(font=("Courier",25),text=lineNumber,bg="red", fg="white")
-                    self.labelLines.pack(pady=10)
-                    
-                    return lineNumber
-                    #labelLines.config(text=lineNumber)
-                    #chooseLine = checkInput(lineNumber)
+
+
                     
        
         
 root = tk.Tk()
+
 app = Win1(root)
 root.mainloop()
