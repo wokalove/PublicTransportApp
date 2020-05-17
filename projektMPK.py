@@ -29,8 +29,8 @@ def ticketCosts(choice):
             cost = Traveler.journeyCosts.append(Traveler.student)
         elif(choice=="no"):
            cost= Traveler.journeyCosts.append(Traveler.adult)
-        else:
-            raise Error
+        #else:
+            #raise Error
     except Error:
         print("Wrong input, try again!")
         ticketCosts(choice)
