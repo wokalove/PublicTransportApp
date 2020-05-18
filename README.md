@@ -33,6 +33,7 @@ W tej aplikacji skorzystano z bazy danych MPK, bibliotek: sqlite3, tkinter. Stos
 Aplikacja __nie uwzględnia__ korzystania z czasów odjazdów i przyjazdów z racji tego, że w bazie MPK, którą pobrałam ich brakuje.
 Aplikacja będzie również napisana w języku angielskim w celu doskonalenia znajomości od strony techniczno -programistycznej tego języka.
 
+Oprócz tego na potrzebę realizacji połączeń pośrednich zastosowano zapis do pliku .json - kod  "graf.py" wykorzystałam jednokrotnie, aby zrealizować połączenie pośrednie - baza nie jest w żaden sposób aktualizowana, więc nie ma sensu generować ciągle nowego pliku.
 
 ### EN
 
