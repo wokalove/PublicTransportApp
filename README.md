@@ -12,7 +12,7 @@ Po uruchomieniu programu pojawia się okno  możliwością wyszukiwania połącz
 Wybieramy, którą linią chcemy dojechać do celu i pokazują nam się kolejno przystanki autobusowe po drodze do końcowej stacji.
 Aplikacja pyta również, czy jest studentem czy dorosłym i na końcu oblicza koszty podróży. 
 
-## **Testy**
+## **Realizacja**
 
 1. Wprowadzenie danych (stacja początkowa i końcowa) przez uzytkownika i sprawdzenie czy istnieją w bazie MPK Kraków - w przeciwnym wypadku aplikacja "upomina", że mogły zostać wpisane niepoprawne dane.
 
