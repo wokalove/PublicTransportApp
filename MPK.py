@@ -2,28 +2,53 @@
 
 import tkinter as tk
 from tkinter import *
-from PIL import Image,ImageTk
-import sqlite3 
+from PIL import Image, ImageTk
+import sqlite3
 import numpy as np
 import json
 
+
 class Traveler:
-    ''' Storing price of tickets and final journey costs'''
-    adult=3.40
-    student=1.70
-    journeyCosts=[]
-    
+    '''Storing price of tickets and final journey costs. Moreover, functions 
+    resposible for counting costs of journey. These aren't time tickets,
+    but one-way. Prices taken from MPK Cracow website.
+    '''
+    adult = 4.60
+    student = 2.30
+    journeyCosts = []
+
+    def ticketCosts(choice):
+        '''Function which count costs of journey depend on user's input.'''
+        try:
+            if choice == "yes":
+                cost = Traveler.journeyCosts.append(Traveler.student)
+            elif choice == "no":
+                cost = Traveler.journeyCosts.append(Traveler.adult)
+            else:
+                raise Error
+        except Error:
+            print("Wrong input, try again!")
+        if choice in ["yes", "no"]:
+            finalCosts = np.sum(Traveler.journeyCosts)
+        return finalCosts
+
+    def getTicketCosts():
+        ''' Returninng final costs of journey'''
+        finalCosts = np.sum(Traveler.journeyCosts)
+        return finalCosts
+
 class Error(Exception):
     """Base class for exceptions"""
-
 class Win1:
-    ''' Class for first window - initialization of two buttons and image'''
+    ''' Class for first window - initialization of two buttons and image
+        Opening next window via command called on button "Start".
+    '''
     def __init__(self, master):
         self.master = master
         self.master.geometry("600x600+300+10")
         self.master.title("My app")
         self.master.config(bg="black")
-        self.master.resizable(False,False)
+        self.master.resizable(False, False)
         
         self.frame = tk.Frame(width=1000, height=1000, background="black")
         
@@ -209,14 +234,13 @@ class Win2(Win1):
         self.busStopsDisplay(bus,inpFrom,inpTo)
         #obliczenie ceny biletu
         
-        self.ticketCosts(ifStudent)
-        text= 'Cost of journey:'+str(self.getTicketCosts())
+        Traveler.ticketCosts(ifStudent)
+        #Traveler.ticket()
+        text= 'Cost of journey:'+str(Traveler.getTicketCosts())
         costLab = tk.Label(self.master, text = text,font=("Courier",12),bg="black", fg="white",wraplength=300)
         costLab.place(x=300,y=540, anchor="center")
         
-    def getTicketCosts(self):
-        finalCosts=np.sum(Traveler.journeyCosts)
-        return finalCosts
+
     def busStopsDisplay(self,busStops,inpFrom,inpTo):
         l1 = tk.Label(self.master, text = "Write down line of tram/bus!!!",font=("Courier",8),bg="white", fg="black")
         l1.place(x=300,y=390, anchor="center")
@@ -239,22 +263,7 @@ class Win2(Win1):
             print(finalStops)
             text=str(finalStops).replace("[","").replace("]","")
             l1.config(text=text,wraplength=600)
-    def ticketCosts(self,choice):
-        try:
-            if(choice == "yes"):
-                cost = Traveler.journeyCosts.append(Traveler.student)
-            elif(choice=="no"):
-               cost= Traveler.journeyCosts.append(Traveler.adult)
-            else:
-                raise Error
-        except Error:
-            l1 = tk.Label(self.master, text = "Wrong Student/Adult input!!!",font=("Courier",8),bg="white", fg="black")
-            l1.place(x=160,y=50, anchor="center")
-            print("Wrong input, try again!")
-            self.ticketCosts(choice)
-        if choice in ["yes","no"]:
-            finalCosts=np.sum(Traveler.journeyCosts)
-        return finalCosts
+
     
     def makingGraphFromFileText(self,text):
     
@@ -344,9 +353,9 @@ class Win2(Win1):
            # ticketCosts(choice)
             text=str(From) + "-->" +str(To) +"VIA LINES" + str(lines)
             stops.append(text)
-            self.ticketCosts(ifStudent)
+            Traveler.ticketCosts(ifStudent)
             From = shortPath[i+1]
-        finalCostsText = "Final costs are:" + str(self.getTicketCosts())
+        finalCostsText = "Final costs are:" + str(Traveler.getTicketCosts())
         stops.append(finalCostsText)
         text = str(stops).replace("{","").replace("}", "").replace('[',"").replace(']',"").replace('"',"")
         
@@ -399,7 +408,6 @@ class Win3(Win2):
 
 def main():
     root = tk.Tk()
-
     app = Win1(root)
     root.mainloop()
     
