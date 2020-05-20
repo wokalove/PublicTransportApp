@@ -1,45 +1,40 @@
-# -*- coding: utf-8 -*-
-
 import tkinter as tk
-from tkinter import *
 from PIL import Image, ImageTk
 import sqlite3
 import numpy as np
 import json
 
+class Error(Exception):
+    """Base class for exceptions"""
 
 class Traveler:
     '''Storing price of tickets and final journey costs. Moreover, functions 
     resposible for counting costs of journey. These aren't time tickets,
     but one-way. Prices taken from MPK Cracow website.
     '''
-    adult = 4.60
-    student = 2.30
-    journeyCosts = []
+    FULL_PRICE = 4.60
+    REDUCED_PRICE = 2.30
+    __journeyCosts = []
 
-    def ticketCosts(choice):
+    def ticket_Costs(choice):
         '''Function which count costs of journey depend on user's input.'''
-        try:
-            if choice == "yes":
-                cost = Traveler.journeyCosts.append(Traveler.student)
-            elif choice == "no":
-                cost = Traveler.journeyCosts.append(Traveler.adult)
-            else:
-                raise Error
-        except Error:
+        finalCosts=[]
+        if choice == "yes":
+            cost = Traveler.journeyCosts.append(Traveler.REDUCED_PRICE)
+        elif choice == "no":
+            cost = Traveler.journeyCosts.append(Traveler.FULL_PRICE)
+        else:
             print("Wrong input, try again!")
         if choice in ["yes", "no"]:
-            finalCosts = np.sum(Traveler.journeyCosts)
+            finalCosts = sum(Traveler.journeyCosts)
         return finalCosts
 
-    def getTicketCosts():
+    def get_Ticket_Costs():
         ''' Returninng final costs of journey'''
-        finalCosts = np.sum(Traveler.journeyCosts)
+        finalCosts = sum(Traveler.journeyCosts)
         return finalCosts
 
-class Error(Exception):
-    """Base class for exceptions"""
-class Win1:
+class Window1:
     ''' Class for first window - initialization of two buttons and image
         Opening next window via command called on button "Start".
     '''
@@ -61,7 +56,7 @@ class Win1:
         self.imgLabel= tk.Label(self.master,image=self.render)
         self.imgLabel.pack(pady=20)
         
-        self.butnew("Start", "2", Win2)
+        self.butnew("Start", "2", Window2)
         self.quit = tk.Button(self.frame, text = f"Quit", command = self.close_window,height = 2, width = 10,fg="red")
         self.quit.config(font=("Courier",20))
         
@@ -71,7 +66,7 @@ class Win1:
         
     def butnew(self, text, number, _class):
         ''' Creating new button with lambda expression'''
-        b=tk.Button(self.frame, text = text,height = 2, width = 10,fg="red",command= lambda: self.combineFunc(self.new_window(number, _class),self.close_window))
+        b=tk.Button(self.frame, text = text,height = 2, width = 10,fg="red",command= lambda:self.new_window(number, _class))
         b.config(font=("Courier",20))
         b.pack(side=tk.TOP)
         
@@ -93,7 +88,7 @@ class Win1:
                 f(*args,**kwargs)
         return combinedFunc
         
-class Win2(Win1):
+class Window2(Window1):
     def __init__(self, master, number):
         self.master = master
         self.master.title("My app")
@@ -138,7 +133,7 @@ class Win2(Win1):
         self.frame.pack( padx=50, pady=200)
 
     def new_window(self, number, _class, answers):
-        '''Function overriden from base class in this case from Win1'''
+        '''Function overriden from base class in this case from Window1'''
         self.new = tk.Toplevel(self.master)
         _class(self.new, number,answers) 
         
@@ -186,12 +181,14 @@ class Win2(Win1):
         returnNumberLine= crsr.fetchall()  
     
         lineNumber=[]
+        print(returnNumberLine)
         for i in returnNumberLine: 
             lineNumber.append(i)
         #list comprehensions do usuwania cudzysłowiów 
         lines = [str(i)[2:-3]for i in lineNumber]
+        #print(lineNumber)
     
-        if not lineNumber == []:
+        if lineNumber:
             #szukanie bezporedniego połączenia między stacjami
             print("You can reach your destination by lines:")
             print(lines)
@@ -234,9 +231,9 @@ class Win2(Win1):
         self.busStopsDisplay(bus,inpFrom,inpTo)
         #obliczenie ceny biletu
         
-        Traveler.ticketCosts(ifStudent)
-        #Traveler.ticket()
-        text= 'Cost of journey:'+str(Traveler.getTicketCosts())
+        Traveler.ticket_Costs(ifStudent)
+        
+        text= 'Cost of journey:'+str(Traveler.get_Ticket_Costs())
         costLab = tk.Label(self.master, text = text,font=("Courier",12),bg="black", fg="white",wraplength=300)
         costLab.place(x=300,y=540, anchor="center")
         
@@ -255,35 +252,35 @@ class Win2(Win1):
         for i in range(smaller,greater+1):
             finalStops.append(busStops[i])
         if fromIndex>toIndex:
-            text=str(finalStops[::-1]).replace("[","").replace("]","")
+            text=str(', '.join(finalStops[::-1]))
             #w przypadku gdy index danego przystanku początkowego jest większy od końcowego to odwraca listę(jazda w drugą stronę)
             print(finalStops[::-1])
             l1.config(text=text,wraplength=600)
         else:
             print(finalStops)
-            text=str(finalStops).replace("[","").replace("]","")
+            text=str(', '.join(finalStops))
             l1.config(text=text,wraplength=600)
 
     
     def makingGraphFromFileText(self,text):
     
-        newdict = dict()
-        
-        for key,values in text.items():       
-            
-            for i in range(len(values) - 1):
-                first = str(values[i])
-                second = str(values[i+1])
+        newdict = {}
+        #key-line_number
+        #values - stops
+        for line_number,stops in text.items():
+            for i in range(len(stops) - 1):
+                first = str(stops[i])
+                second = str(stops[i+1])
                 first = first.translate({ord(i): None for i in "[]'"})
                 second = second.translate({ord(i): None for i in "[]'"})
                 if first != second:
                     if first in newdict:
                         if second in newdict[first]:
-                            newdict[first][second].append(key)
+                            newdict[first][second].append(line_number)
                         else:
-                            newdict[first].update({second:[key]})
+                            newdict[first].update({second:[line_number]})
                     else:
-                        newdict.update({first:{second:[key]}})
+                        newdict.update({first:{second:[line_number]}})
             if second not in newdict:
                 newdict.update({second:{}})
             
@@ -350,20 +347,38 @@ class Win2(Win1):
             To = shortPath[i+1]
             
             print(From," --> ",To," via lines: ",lines)
-           # ticketCosts(choice)
+           
             text=str(From) + "-->" +str(To) +"VIA LINES" + str(lines)
             stops.append(text)
-            Traveler.ticketCosts(ifStudent)
+            Traveler.ticket_Costs(ifStudent)
             From = shortPath[i+1]
-        finalCostsText = "Final costs are:" + str(Traveler.getTicketCosts())
+        finalCostsText = "Final costs are:" + str(Traveler.get_Ticket_Costs())
         stops.append(finalCostsText)
         text = str(stops).replace("{","").replace("}", "").replace('[',"").replace(']',"").replace('"',"")
         
         
         stopsLabel = tk.Label(self.master, text = text,font=("Courier",20),bg="black", fg="white",width=200,height=200,wraplength =450)
         stopsLabel.place(x=300,y=300, anchor="center")
+    def save_to_file_ONLY_ONCE():
+        ''' Saving dictionary to file just ONCE: (line_number: next_stops) '''
+        connection = sqlite3.connect("rozklady.sqlite3") 
+        crsr = connection.cursor() 
+        numberLine=crsr.execute("SELECT DISTINCT LineName from StopDepartures ASC;")
+
+        returnNumbersLine= crsr.fetchall()  
+
+        lineNumbers=[]
+        for i in returnNumbersLine:
+            lineNumbers.append(str(i)[2:-3])
+
+        graf = {}
+        for line in lineNumbers:
+            busStop=crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(line,))
+            returnBusStops= crsr.fetchall()  
+            graf[line]=returnBusStops
+            json.dump( graf, open( 'graf.json', 'w' ,encoding='utf8'),ensure_ascii=False )
         
-class Win3(Win2):
+class Win3(Window2):
     def __init__(self, master, number,studentAns):
         self.master = master
         self.master.geometry("600x600+300+10")
@@ -408,7 +423,7 @@ class Win3(Win2):
 
 def main():
     root = tk.Tk()
-    app = Win1(root)
+    app = Window1(root)
     root.mainloop()
     
 if __name__ == '__main__':
