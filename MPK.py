@@ -11,9 +11,11 @@ class Traveler:
     '''
     FULL_PRICE = 4.60
     REDUCED_PRICE = 2.30
-    __journey_costs = []
 
-    def ticket_costs(choice):
+    def __init__(self):
+        self.__journey_costs = []
+
+    def ticket_costs(fun,choice):
         '''Function which count costs of journey depend on user's input.'''
         final_costs=[]
         if choice == "yes":
@@ -25,11 +27,10 @@ class Traveler:
         if choice in ["yes", "no"]:
             final_costs = sum(Traveler.__journey_costs)
         return final_costs
-
+    #@ticket_costs
     def get_ticket_costs():
         ''' Returninng final costs of journey'''
-        final_costs = sum(Traveler.__journey_costs)
-        return final_costs
+        return sum(Traveler.__journey_costs)
     def clear_costs_of_journey():
         return Traveler.__journey_costs.clear()
 
@@ -206,7 +207,12 @@ class Window2(Window1):
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor() 
 
-        number_line=crsr.execute("SELECT DISTINCT LineName FROM StopDepartures WHERE StopName=? AND LineName IN (SELECT LineName from StopDepartures  where StopName=?) COLLATE NOCASE",(self.studentAns[1],self.studentAns[2],))
+        number_line=crsr.execute("""SELECT DISTINCT LineName FROM StopDepartures
+                                 WHERE StopName=?
+                                 AND LineName IN (SELECT LineName from 
+                                                  StopDepartures  where StopName=?)
+                                 COLLATE NOCASE"""
+                                 ,(self.studentAns[1],self.studentAns[2],))
         return_number_line= crsr.fetchall()  
 
         line_number=[]
@@ -235,7 +241,7 @@ class Window2(Window1):
                                  wraplength=600)
                     l.place(x=300,y=130, anchor="center")
                 else:
-                    shortest_way = self.find_shortest_path(new_dict, 
+                    shortest_way = find_shortest_path(new_dict, 
                                                            inp_from, inp_to)
                     fullPath = self.path_with_correct_lines(shortest_way,
                                                             new_dict)
@@ -251,7 +257,10 @@ class Window2(Window1):
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor() 
 
-        bus_stop=crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(choose_line,))
+        bus_stop=crsr.execute("""SELECT s.StopName FROM StopDepartures s 
+                              JOIN variants v using(LineName) WHERE s.LineName=? 
+                              GROUP BY s.PointId ORDER BY s.No """,
+                              (choose_line,))
         return_bus_stops= crsr.fetchall()  
         
         bus_stops=[]
@@ -263,7 +272,7 @@ class Window2(Window1):
         self.bus_stops_display(bus,inp_from,inp_to)
         Traveler.ticket_costs(if_student)
         
-        text= 'Cost of journey:'+str(Traveler.get_ticket_costs())
+        text= 'Cost of journey:'+str('%.2f'%Traveler.get_ticket_costs())
         cost_lab = tk.Label(self.master,text=text,
                             font=( self.font_type ,12),
                             bg="black", fg="white",wraplength=300)
@@ -320,22 +329,9 @@ class Window2(Window1):
             
         return new_dict
 
-    def find_shortest_path(self,graph, start, end):
-            ''' looking for shortest path indirect connection'''
-            queue = []
-            dist = {start: [start]}
-            queue.append(start)
-            while queue:
-                at = queue.pop(0)
-                
-                for next in graph[at]:
-                    if next not in dist:
-                        dist[next] = [dist[at], next]
-                        queue.append(next)
-                        
-            shortest_way = str(dist.get(end))
-            shortest_way = shortest_way.translate({ord(i): None for i in "[]'"})
-            return shortest_way
+
+
+
 
     def path_with_correct_lines(self,path,graph):
         '''Lines to stops '''
@@ -386,7 +382,7 @@ class Window2(Window1):
             stops.append(text)
             Traveler.ticket_costs(if_student)
             From = short_path[i+1]
-        final_costs_text = "Final costs are:" + str(Traveler.get_ticket_costs())
+        final_costs_text = "Final costs are:" + str('%.2f'%Traveler.get_ticket_costs())
         stops.append(final_costs_text)
         text = str(stops).replace("{","").replace("}", "").replace('[',"").replace(']',"").replace('"',"")
 
@@ -401,7 +397,8 @@ class Window2(Window1):
         ''' Saving dictionary to file just ONCE: (line_number: next_stops) '''
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor() 
-        number_line=crsr.execute("SELECT DISTINCT LineName from StopDepartures ASC;")
+        number_line=crsr.execute("""SELECT DISTINCT LineName
+                                 from StopDepartures ASC;""")
 
         return_numbers_line= crsr.fetchall()  
 
@@ -411,7 +408,11 @@ class Window2(Window1):
 
         graph = {}
         for line in line_numbers:
-            bus_stop=crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(line,))
+            bus_stop=crsr.execute("""SELECT s.StopName FROM StopDepartures s 
+                                  JOIN variants v USING(LineName) 
+                                  WHERE s.LineName=? GROUP BY s.PointId 
+                                  ORDER BY s.No """
+                                  ,(line,))
             return_bus_stops= crsr.fetchall()  
             graph[line]=return_bus_stops
             json.dump( graph, open( 'graf.json', 'w',encoding='utf8'),
@@ -485,6 +486,23 @@ class Win3(Window2):
                                 width = 10,fg="red",
                                 command= lambda:self.return_window(self.master))
         back_button.place(x=180,y=560)
+        
+def find_shortest_path(graph, start, end):
+    ''' looking for shortest path indirect connection'''
+    queue = []
+    dist = {start: [start]}
+    queue.append(start)
+    while queue:
+        at = queue.pop(0)
+                
+        for next in graph[at]:
+            if next not in dist:
+                dist[next] = [dist[at], next]
+                queue.append(next)
+                        
+    shortest_way = str(dist.get(end))
+    shortest_way = shortest_way.translate({ord(i): None for i in "[]'"})
+    return shortest_way
 
 def main():
     root = tk.Tk()
