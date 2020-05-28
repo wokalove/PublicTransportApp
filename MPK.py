@@ -14,25 +14,25 @@ class Traveler:
 
     def __init__(self):
         self.__journey_costs = []
-
-    def ticket_costs(fun,choice):
+    
+    #@property
+    def ticket_costs(self,choice):
         '''Function which count costs of journey depend on user's input.'''
         final_costs=[]
         if choice == "yes":
-            cost = Traveler.__journey_costs.append(Traveler.REDUCED_PRICE)
+            self.__journey_costs.append(Traveler.REDUCED_PRICE)
         elif choice == "no":
-            cost = Traveler.__journey_costs.append(Traveler.FULL_PRICE)
+            self.__journey_costs.append(Traveler.FULL_PRICE)
         else:
             print("Wrong input, try again!")
         if choice in ["yes", "no"]:
-            final_costs = sum(Traveler.__journey_costs)
-        return final_costs
-    #@ticket_costs
-    def get_ticket_costs():
-        ''' Returninng final costs of journey'''
-        return sum(Traveler.__journey_costs)
-    def clear_costs_of_journey():
-        return Traveler.__journey_costs.clear()
+            final_costs = sum(self.__journey_costs)
+            return final_costs
+        else:
+            return 0.0
+        
+    def clear_costs_of_journey(self):
+        self.__journey_costs.clear()
 
 class Window1:
     ''' Class for first window - initialization of two buttons and image
@@ -203,7 +203,8 @@ class Window2(Window1):
     def connect_to_data(self,inp_from,inp_to,if_student):
         ''' function responsible for connecting to database and check if journey
         is direct or indirect '''
-        Traveler.clear_costs_of_journey()
+        costs = Traveler()
+        costs.clear_costs_of_journey()
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor() 
 
@@ -270,9 +271,10 @@ class Window2(Window1):
         bus = [str(i)[2:-3]for i in bus_stops]
 
         self.bus_stops_display(bus,inp_from,inp_to)
-        Traveler.ticket_costs(if_student)
+        costs = Traveler()
+        get_costs = costs.ticket_costs(if_student)
         
-        text= 'Cost of journey:'+str('%.2f'%Traveler.get_ticket_costs())
+        text= 'Cost of journey:'+str('%.2f'%get_costs)
         cost_lab = tk.Label(self.master,text=text,
                             font=( self.font_type ,12),
                             bg="black", fg="white",wraplength=300)
@@ -357,6 +359,7 @@ class Window2(Window1):
         From = short_path[0]
         already = 0
         stops=[]
+        costs = Traveler()
         for i in range(len(short_path)-1):
             
             if(already == 0):
@@ -371,21 +374,25 @@ class Window2(Window1):
                 already = 1
                 continue
             lines = []
-
+            
             [lines.append(x) for x in cor if x not in lines]
             already = 0
             To = short_path[i+1]
+            
+            get_costs = costs.ticket_costs(if_student)
             
             print(From," --> ",To," via lines: ",lines)
            
             text=str(From) + "-->" +str(To) +"VIA LINES" + str(lines)
             stops.append(text)
-            Traveler.ticket_costs(if_student)
+            
             From = short_path[i+1]
-        final_costs_text = "Final costs are:" + str('%.2f'%Traveler.get_ticket_costs())
+
+        final_costs_text = "Final costs are:" + str('%.2f'%get_costs)
         stops.append(final_costs_text)
         text = str(stops).replace("{","").replace("}", "").replace('[',"").replace(']',"").replace('"',"")
-
+        
+        
         stopsLabel = tk.Label(self.master, 
                               text=text,
                               font=(self.font_type,20),
