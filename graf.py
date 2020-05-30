@@ -7,29 +7,22 @@ Created on Sat May  9 11:43:06 2020
 
 import sqlite3
 import json
-import numpy as np
 
 connection = sqlite3.connect("rozklady.sqlite3") 
     
 crsr = connection.cursor() 
-numberLine=crsr.execute("SELECT DISTINCT LineName from StopDepartures ASC;")
 
-returnNumbersLine= crsr.fetchall()  
+line_numbers=[]
 
-lineNumbers=[]
-for i in returnNumbersLine:
-    lineNumbers.append(str(i)[2:-3])
-    
-#print(lineNumbers)
 
-graf = dict()
+for (line_number,) in crsr.execute("SELECT DISTINCT LineName from StopDepartures ASC;"):
+    line_numbers.append(line_number)
 
-#Zapis JEDNOKROTNY słownika do pliku: {nr liniii: kolejne przystanki}
-for line in lineNumbers:
-    busStop=crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(line,))
-    returnBusStops= crsr.fetchall()  
-    graf[line]=returnBusStops
-    json.dump( graf, open( 'graf.json', 'w' ,encoding='utf8'),ensure_ascii=False )
+graf = {}
+for line in line_numbers:
+    for (Stopname,) in crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(line,)):
+        graf[line]=Stopname
+        json.dump( graf, open( 'graf.json', 'w' ,encoding='utf8'),ensure_ascii=False )
 
 
 

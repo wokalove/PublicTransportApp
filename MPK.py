@@ -4,18 +4,23 @@ import sqlite3
 import numpy as np
 import json
 
+
 class Traveler:
     '''Storing price of tickets and final journey costs. Moreover, functions 
     resposible for counting costs of journey. These aren't time tickets,
-    but one-way. Prices taken from MPK Cracow website.
-    '''
+    but one-way. Prices taken from MPK Cracow website.'''
+
     FULL_PRICE = 4.60
     REDUCED_PRICE = 2.30
 
     def __init__(self):
         self.__journey_costs = []
     
-    #@property
+    @property
+    def total_cost(self):
+        return sum(self.__journey_costs)
+    
+    @total_cost.setter
     def ticket_costs(self,choice):
         '''Function which count costs of journey depend on user's input.'''
         final_costs=[]
@@ -30,14 +35,14 @@ class Traveler:
             return final_costs
         else:
             return 0.0
-        
+
     def clear_costs_of_journey(self):
         self.__journey_costs.clear()
+        
 
 class Window1:
     ''' Class for first window - initialization of two buttons and image
-        Opening next window via command called on button "Start".
-    '''
+        Opening next window via command called on button "Start".'''
     def __init__(self, master):
         self.master = master
         self.master.geometry("600x600+300+10")
@@ -70,20 +75,18 @@ class Window1:
         self.quit.pack(side=tk.TOP,pady=20)
         self.frame.pack( padx=20, pady=20)
 
-        
     def create_new_button(self, text, number, _class):
         ''' Creating new button with lambda expression'''
         b=tk.Button(self.frame, text = text,height = 2, width = 10,fg="red",
                     command= lambda:self.new_window(number, _class))
         b.config(font=("Courier",20))
         b.pack(side=tk.TOP)
-        
-        
+
     def new_window(self, number, _class):
         ''' Creating next window after clicking on specific button'''
         self.new = tk.Toplevel(self.master)
         _class(self.new, number) 
-        
+
     def close_window(self):
         ''' Closing window  - function for quit button'''
         self.master.destroy()
@@ -176,7 +179,8 @@ class Window2(Window1):
                      text ="I am looking for connection..",
                      font=("Courier",12),
                      bg="white", fg="black",wraplength=600)
-        text=str(self.connect_to_data(inp_from,inp_to,if_student)).replace("]","").replace("[","")
+        text=str(self.connect_to_data(inp_from,
+                                      inp_to,if_student)).replace("]","").replace("[","")
         l.config(text=text)
 
         if text == []:
@@ -272,9 +276,10 @@ class Window2(Window1):
 
         self.bus_stops_display(bus,inp_from,inp_to)
         costs = Traveler()
-        get_costs = costs.ticket_costs(if_student)
+        costs.ticket_costs = if_student
+        #get_costs = costs.ticket_costs(if_student)
         
-        text= 'Cost of journey:'+str('%.2f'%get_costs)
+        text= 'Cost of journey:'+str('%.2f'%costs.ticket_costs)
         cost_lab = tk.Label(self.master,text=text,
                             font=( self.font_type ,12),
                             bg="black", fg="white",wraplength=300)
@@ -316,8 +321,8 @@ class Window2(Window1):
             for i in range(len(stops) - 1):
                 first = str(stops[i])
                 second = str(stops[i+1])
-                first = first.translate({ord(i): None for i in "[]'"})
-                second = second.translate({ord(i): None for i in "[]'"})
+                first = first
+                second = second
                 if first != second:
                     if first in new_dict:
                         if second in new_dict[first]:
@@ -328,11 +333,8 @@ class Window2(Window1):
                         new_dict.update({first:{second:[line_number]}})
             if second not in new_dict:
                 new_dict.update({second:{}})
-            
+        print("Nowy graf: ",new_dict)
         return new_dict
-
-
-
 
 
     def path_with_correct_lines(self,path,graph):
@@ -379,7 +381,7 @@ class Window2(Window1):
             already = 0
             To = short_path[i+1]
             
-            get_costs = costs.ticket_costs(if_student)
+            costs.ticket_costs = if_student
             
             print(From," --> ",To," via lines: ",lines)
            
@@ -388,7 +390,7 @@ class Window2(Window1):
             
             From = short_path[i+1]
 
-        final_costs_text = "Final costs are:" + str('%.2f'%get_costs)
+        final_costs_text = "Final costs are:" + str('%.2f'%costs.ticket_costs)
         stops.append(final_costs_text)
         text = str(stops).replace("{","").replace("}", "").replace('[',"").replace(']',"").replace('"',"")
         
@@ -404,26 +406,21 @@ class Window2(Window1):
         ''' Saving dictionary to file just ONCE: (line_number: next_stops) '''
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor() 
-        number_line=crsr.execute("""SELECT DISTINCT LineName
-                                 from StopDepartures ASC;""")
-
-        return_numbers_line= crsr.fetchall()  
 
         line_numbers=[]
-        for i in return_numbers_line:
-            line_numbers.append(str(i)[2:-3])
+        for (line_number,) in crsr.execute("SELECT DISTINCT LineName from StopDepartures ASC;"):
+            line_numbers.append(line_number)
 
-        graph = {}
+        graf = {}
         for line in line_numbers:
-            bus_stop=crsr.execute("""SELECT s.StopName FROM StopDepartures s 
-                                  JOIN variants v USING(LineName) 
-                                  WHERE s.LineName=? GROUP BY s.PointId 
-                                  ORDER BY s.No """
-                                  ,(line,))
-            return_bus_stops= crsr.fetchall()  
-            graph[line]=return_bus_stops
-            json.dump( graph, open( 'graf.json', 'w',encoding='utf8'),
-                      ensure_ascii=False )
+            for (stop_name,) in crsr.execute("""SELECT s.StopName 
+                                            FROM StopDepartures s 
+                                            JOIN variants v using(LineName) 
+                                            where s.LineName=? group by s.PointId 
+                                            order by s.No """,(line,)):
+                graf[line]=stop_name
+                json.dump( graf, open( 'graf.json', 'w' ,
+                                      encoding='utf8'),ensure_ascii=False )
         
 class Win3(Window2):
     def __init__(self, master, number,studentAns):
