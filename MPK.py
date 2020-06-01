@@ -236,7 +236,7 @@ class Window2(Window1):
                 data = json.load(json_file)
                 new_dict={}
                 new_dict = self.making_graph_from_file_text(data)
-                
+                print("Data:",data)
                 
                 if all (inp not in new_dict for inp in (inp_from,inp_to)):
                     l = tk.Label(self.master,
@@ -316,13 +316,11 @@ class Window2(Window1):
             from .json file new_dict are conections specific line 
             between neighboring pairs of stops'''
         new_dict = {}
-
         for line_number,stops in text.items():
             for i in range(len(stops) - 1):
-                first = str(stops[i])
-                second = str(stops[i+1])
-                first = first
-                second = second
+                first = stops[i]
+                second = stops[i+1]
+
                 if first != second:
                     if first in new_dict:
                         if second in new_dict[first]:
@@ -335,7 +333,6 @@ class Window2(Window1):
                 new_dict.update({second:{}})
         print("Nowy graf: ",new_dict)
         return new_dict
-
 
     def path_with_correct_lines(self,path,graph):
         '''Lines to stops '''

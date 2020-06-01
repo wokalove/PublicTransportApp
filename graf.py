@@ -19,13 +19,21 @@ for (line_number,) in crsr.execute("SELECT DISTINCT LineName from StopDepartures
     line_numbers.append(line_number)
 
 graf = {}
+stops_to_line=[]
 for line in line_numbers:
-    for (Stopname,) in crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(line,)):
-        graf[line]=Stopname
-        json.dump( graf, open( 'graf.json', 'w' ,encoding='utf8'),ensure_ascii=False )
+    #print("Linia:",line)
+    for (stops,) in crsr.execute("SELECT s.StopName FROM StopDepartures s JOIN variants v using(LineName) where s.LineName=? group by s.PointId order by s.No ",(line,)):
+        #print(stops)
+        print(stops_to_line)
+        stops_to_line.append(stops)
+        #print("Przystanki:", stops_to_line)
+    
+    graf[line]=stops_to_line
+    stops_to_line=[]
+    json.dump( graf, open( 'graf.json', 'w' ,encoding='utf8'),ensure_ascii=False )
 
-
-
+#print(stops_to_line)
+#print(graf)
 
 
 
