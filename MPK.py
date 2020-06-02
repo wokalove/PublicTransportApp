@@ -236,7 +236,7 @@ class Window2(Window1):
                 data = json.load(json_file)
                 new_dict={}
                 new_dict = self.making_graph_from_file_text(data)
-                print("Data:",data)
+               # print("Data:",data)
                 
                 if all (inp not in new_dict for inp in (inp_from,inp_to)):
                     l = tk.Label(self.master,
@@ -331,7 +331,7 @@ class Window2(Window1):
                         new_dict.update({first:{second:[line_number]}})
             if second not in new_dict:
                 new_dict.update({second:{}})
-        print("Nowy graf: ",new_dict)
+        #print("Nowy graf: ",new_dict)
         return new_dict
 
     def path_with_correct_lines(self,path,graph):
@@ -409,15 +409,19 @@ class Window2(Window1):
             line_numbers.append(line_number)
 
         graf = {}
+        stops_to_line=[]
         for line in line_numbers:
-            for (stop_name,) in crsr.execute("""SELECT s.StopName 
+            for (stops,) in crsr.execute("""SELECT s.StopName 
                                             FROM StopDepartures s 
-                                            JOIN variants v using(LineName) 
+                                            JOIN variants v using(LineName)
                                             where s.LineName=? group by s.PointId 
                                             order by s.No """,(line,)):
-                graf[line]=stop_name
-                json.dump( graf, open( 'graf.json', 'w' ,
-                                      encoding='utf8'),ensure_ascii=False )
+                print(stops_to_line)
+                stops_to_line.append(stops)
+    
+            graf[line]=stops_to_line
+            stops_to_line=[]
+            json.dump( graf, open( 'graf.json', 'w' ,encoding='utf8'),ensure_ascii=False )
         
 class Win3(Window2):
     def __init__(self, master, number,studentAns):
@@ -503,6 +507,8 @@ def find_shortest_path(graph, start, end):
                         
     shortest_way = str(dist.get(end))
     shortest_way = shortest_way.translate({ord(i): None for i in "[]'"})
+    print("Find_shortest_path",type(shortest_way))
+    print("Graf:",graph)
     return shortest_way
 
 def main():
