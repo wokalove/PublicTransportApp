@@ -140,7 +140,6 @@ class Window2(Window1):
         
         self.to_place = tk.Entry(self.master,bd=20)
         self.to_place.place(x=240,y=380)
-        
 
         self.create_new_button("Find connection -->", "2", Win3)
         return_button = tk.Button(self.master,font=(self.font_type,12), 
@@ -211,21 +210,15 @@ class Window2(Window1):
         costs.clear_costs_of_journey()
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor() 
-
-        number_line=crsr.execute("""SELECT DISTINCT LineName FROM StopDepartures
+        line_number=[]
+        for (stops,) in crsr.execute("""SELECT DISTINCT LineName FROM StopDepartures
                                  WHERE StopName=?
                                  AND LineName IN (SELECT LineName from 
                                                   StopDepartures  where StopName=?)
                                  COLLATE NOCASE"""
-                                 ,(self.studentAns[1],self.studentAns[2],))
-        return_number_line= crsr.fetchall()  
-
-        line_number=[]
-        print(return_number_line)
-        for i in return_number_line: 
-            line_number.append(i)
-
-        lines = [str(i)[2:-3]for i in line_number]
+                                 ,(self.studentAns[1],self.studentAns[2],)):
+                                     line_number.append(stops)
+        lines = [i for i in line_number]
 
         if line_number:
             print("You can reach your destination by lines:")
@@ -261,23 +254,23 @@ class Window2(Window1):
         
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor() 
-
-        bus_stop=crsr.execute("""SELECT s.StopName FROM StopDepartures s 
+        bus_stops=[]
+        for (line,) in crsr.execute("""SELECT s.StopName FROM StopDepartures s 
                               JOIN variants v using(LineName) WHERE s.LineName=? 
                               GROUP BY s.PointId ORDER BY s.No """,
-                              (choose_line,))
-        return_bus_stops= crsr.fetchall()  
+                              (choose_line,)):
+            bus_stops.append(line)
         
-        bus_stops=[]
         print("Bus stops leading to your destination:")
+        '''
         for i in return_bus_stops: 
             bus_stops.append(i)
-        bus = [str(i)[2:-3]for i in bus_stops]
+        '''
+        bus = [i for i in bus_stops]
 
         self.bus_stops_display(bus,inp_from,inp_to)
         costs = Traveler()
         costs.ticket_costs = if_student
-        #get_costs = costs.ticket_costs(if_student)
         
         text= 'Cost of journey:'+str('%.2f'%costs.ticket_costs)
         cost_lab = tk.Label(self.master,text=text,
@@ -352,7 +345,7 @@ class Window2(Window1):
         print("Path to your destination:" , short_path)
         print("\n")
         print("You can reach your destination by lines:")
-        
+
         short_path = short_path.split(', ')
         short_path = np.array(short_path)
         From = short_path[0]
@@ -380,14 +373,12 @@ class Window2(Window1):
             
             costs.ticket_costs = if_student
             
-            print(From," --> ",To," via lines: ",lines)
-           
-            text=str(From) + "-->" +str(To) +"VIA LINES" + str(lines)
+            text=str(From) + "-->" +str(To) +"  LINES:" + str(lines)
             stops.append(text)
             
             From = short_path[i+1]
 
-        final_costs_text = "Final costs are:" + str('%.2f'%costs.ticket_costs)
+        final_costs_text = str("Final costs are:") + str('%.2f'%costs.ticket_costs)
         stops.append(final_costs_text)
         text = str(stops).replace("{","").replace("}", "").replace('[',"").replace(']',"").replace('"',"")
         
@@ -396,8 +387,10 @@ class Window2(Window1):
                               text=text,
                               font=(self.font_type,20),
                               bg="black", fg="white",
-                              width=200,height=200,wraplength =450)
+                              width=200,height=200,wraplength =350)
         stopsLabel.place(x=300,y=300, anchor="center")
+
+
 
     def save_to_file_ONLY_ONCE():
         ''' Saving dictionary to file just ONCE: (line_number: next_stops) '''
@@ -405,7 +398,8 @@ class Window2(Window1):
         crsr = connection.cursor() 
 
         line_numbers=[]
-        for (line_number,) in crsr.execute("SELECT DISTINCT LineName from StopDepartures ASC;"):
+        for (line_number,) in crsr.execute(""""SELECT DISTINCT LineName
+                                            from StopDepartures ASC;"""):
             line_numbers.append(line_number)
 
         graf = {}
@@ -513,7 +507,7 @@ def find_shortest_path(graph, start, end):
 
 def main():
     root = tk.Tk()
-    app = Window1(root)
+    Window1(root)
     root.mainloop()
     
 if __name__ == '__main__':
