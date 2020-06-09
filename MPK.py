@@ -8,7 +8,8 @@ import json
 class Traveler:
     '''Storing price of tickets and final journey costs. Moreover, functions 
     resposible for counting costs of journey. These aren't time tickets,
-    but one-way. Prices taken from MPK Cracow website.'''
+    but one-way. Prices taken from MPK Cracow website. After checking out costs
+    of journey  they are cleaning in clear_costs_of_journey.'''
 
     FULL_PRICE = 4.60
     REDUCED_PRICE = 2.30
@@ -323,7 +324,7 @@ class Window2(Window1):
         return new_dict
 
     def path_with_correct_lines(self,path,graph):
-        '''Lines to stops '''
+        '''Updating graf with stops adding lines'''
         full_path = {}
         path = path.split(', ')
 
