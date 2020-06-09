@@ -1,9 +1,8 @@
-import tkinter as tk
-from PIL import Image, ImageTk
-import sqlite3
-import numpy as np
 import json
-
+import sqlite3
+import tkinter as tk
+import numpy as np
+from PIL import Image, ImageTk
 
 class Traveler:
     '''Storing price of tickets and final journey costs. Moreover, functions 
@@ -225,7 +224,6 @@ class Window2(Window1):
         else:
             with open('graf.json',encoding="utf8") as json_file:
                 data = json.load(json_file)
-                new_dict = {}
                 new_dict = self.making_graph_from_file_text(data)
 
                 if all (inp not in new_dict for inp in (inp_from,inp_to)):
@@ -335,6 +333,7 @@ class Window2(Window1):
         full_path.update({path[i+1]:[]})
 
         return full_path
+
     def display_bus_stops_indirect(self,short_path,long_path,From,To,if_student):
         ''' Displaying path of indirect connections
             with removing duplicate lines'''
@@ -387,7 +386,7 @@ class Window2(Window1):
         stopsLabel.place(x=300,y=300, anchor="center")
 
 
-    def save_to_file_ONLY_ONCE():
+    def save_to_file_ONLY_ONCE(self):
         ''' Saving dictionary to file just ONCE: (line_number: next_stops) '''
         connection = sqlite3.connect("rozklady.sqlite3") 
         crsr = connection.cursor()
