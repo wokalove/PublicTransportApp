@@ -27,25 +27,25 @@ Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy te
 
 - **Udało się**
  
-Udało się zrealizować główne cele,czyli:
-- [x] wyszukiwanie połaczeń pośrednich (za pomocą przeszukiwania grafu), 
-- [x] wyszukiwanie połączeń bezpośrednich 
-- [x] obliczanie kosztów podróży (przy pomocy dekoratorów). 
+ Udało się zrealizować główne cele,czyli:
+ - [x] wyszukiwanie połaczeń pośrednich (za pomocą przeszukiwania grafu), 
+ - [x] wyszukiwanie połączeń bezpośrednich 
+ - [x] obliczanie kosztów podróży (przy pomocy dekoratorów). 
 
 - **Napotkane problemy:**
 
-* Pierwszy problem napotkałam z zapisem do pliku .json grafu, który był tworzony na podstawie danych zwróconych z zapytań do bazy danych.
-Początkowo używałam za każdym razem metodę ```.fetchall()```, aby móc uzyskać zwrócone dane przez zapytanie. Przez tę metodę zamiast zwykłej listy przystanków tworzyła mi się listy w których był jeden przystanek w jednej dużej liście, czyli przykładowo:
-```[[„Mydlniki”],[„Zakliki”],[„Godlewskiego”]]``` zamiast ```[„Mydlniki”,”Zakliki”,”Godlewskiego”]```. 
- Tutaj znacząco pomógł mi Pan Dr Ciura, który pokazał, że dane należy wczytywać przy pomocy pętli for czyli przykładowo [tutaj](https://github.com/wokalove/MPK/blob/ad8acbab0cdb53dfb2e73d09f0366ebcb6e627ce/MPK.py#L211-L217)
- 
-* Problemy również napotkałam przy połączeniu algorytmu BFS w dojazdach pośrednich z racji tego, że oprócz tego, że musiałam stworzyć nowy graf na podstawie wcześniej stworzonego to musiałam dodatkowo go uaktualniać, żeby dodać numery liniii do poszczególnych kluczy, które były niezbędne do informowania użytkownika, którymi liniami dojedzie do celu.
+ * Pierwszy problem napotkałam z zapisem do pliku .json grafu, który był tworzony na podstawie danych zwróconych z zapytań do bazy danych.
+ Początkowo używałam za każdym razem metodę ```.fetchall()```, aby móc uzyskać zwrócone dane przez zapytanie. Przez tę metodę zamiast zwykłej listy przystanków tworzyła mi się listy w których był jeden przystanek w jednej dużej liście, czyli przykładowo:
+ ```[[„Mydlniki”],[„Zakliki”],[„Godlewskiego”]]``` zamiast ```[„Mydlniki”,”Zakliki”,”Godlewskiego”]```. 
+  Tutaj znacząco pomógł mi Pan Dr Ciura, który pokazał, że dane należy wczytywać przy pomocy pętli for czyli przykładowo [tutaj](https://github.com/wokalove/MPK/blob/ad8acbab0cdb53dfb2e73d09f0366ebcb6e627ce/MPK.py#L211-L217)
 
-* Napisłam testy do klasy Traveler i Pan Dr Ciura dodatkowo zlecił dopisanie dwóch testów do funkcji find_shortest_path , czyli do funkcji wyszukującej połączenia bezpośrednie. Z testami raczej nie napotkałam większych problemów i wyniki wychodziły zgodne z oczekiwanymi.
+ * Problemy również napotkałam przy połączeniu algorytmu BFS w dojazdach pośrednich z racji tego, że oprócz tego, że musiałam stworzyć nowy graf na podstawie wcześniej stworzonego to musiałam dodatkowo go uaktualniać, żeby dodać numery liniii do poszczególnych kluczy, które były niezbędne do informowania użytkownika, którymi liniami dojedzie do celu.
+
+ * Napisłam testy do klasy Traveler i Pan Dr Ciura dodatkowo zlecił dopisanie dwóch testów do funkcji find_shortest_path , czyli do funkcji wyszukującej połączenia bezpośrednie. Z testami raczej nie napotkałam większych problemów i wyniki wychodziły zgodne z oczekiwanymi.
 
 - **Elementy specjalne**
 
-Myślę, że elementami specjalnymi mojego programu jest użycie dekoratorów, algorytmu BFS przeszukiwania grafu oraz zapisywanie,  wczytywanie z pliku .json. oraz korzystanie z biblioteki sqlite3, czyli importowanie bazy oraz operowanie na niej.
+ Myślę, że elementami specjalnymi mojego programu jest użycie dekoratorów, algorytmu BFS przeszukiwania grafu oraz zapisywanie,  wczytywanie z pliku .json. oraz korzystanie z biblioteki sqlite3, czyli importowanie bazy oraz operowanie na niej.
 
 ## **Opisane linki do istotnych fragmentów kodu:**
 1.	Lambda
