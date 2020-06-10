@@ -6,7 +6,7 @@ Do realizacji tego zadania musiałam zaimplementować funkcje wyszukujące poł�
 
  ## **Ogólny opis kodu**
  
-### **Algorytm połączenia bezpośredniego:**
+### **Algorytm połączenia bezpośredniego**
 1. Użytkownik wpisuje skąd i dokąd chce jechać. 
 2. Wpisane dane są wyszukiwane za pomocą zapytania do bazy danych i w rezultacie otrzymujemy numery linii, którymi dojedziemy do celu.
 3. Użytkownik wybiera numer linii, którą chce dojechać do celu.
@@ -14,7 +14,7 @@ Do realizacji tego zadania musiałam zaimplementować funkcje wyszukujące poł�
 5.  Wyświetlenie ile przystanków dzieli podróżnika do celu.
 Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowałam sprawdzanie indeksu danego przystanku. Jeśli indeks przystanku „skąd” był wyższy niż „dokąd” to  przystanki wypisują się w odwrotnej kolejności, w przeciwnym wypadku – w takiej jakiej są.
 
-### **Algorytm połączenia pośredniego:**
+### **Algorytm połączenia pośredniego**
 1.	Użytkownik wpisuje skąd i dokąd chce jechać.
 2.	Tworzony jest graf { nr_ lini: kolejne_przystanki} – warto zwrócić uwagę na fakt, że z uwagi na wydajność programu postanowiłam dokonać jednokrotnego zapisu do pliku .json tego grafu.
 3.	Odczytywanie wyżej wymieniononego grafu w programie i tworzenie na jego bazie nowego, a mianowicie połączenia danych linii pomiędzy parami sąsiednich przystanków.
@@ -32,7 +32,7 @@ Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy te
  - [x] wyszukiwanie połączeń bezpośrednich 
  - [x] obliczanie kosztów podróży (przy pomocy dekoratorów). 
 
-### **Napotkane problemy:**
+### **Napotkane problemy**
 
  * Pierwszy problem napotkałam z zapisem do pliku .json grafu, który był tworzony na podstawie danych zwróconych z zapytań do bazy danych.
  Początkowo używałam za każdym razem metodę ```.fetchall()```, aby móc uzyskać zwrócone dane przez zapytanie. Przez tę metodę zamiast zwykłej listy przystanków tworzyła mi się listy w których był jeden przystanek w jednej dużej liście, czyli przykładowo:
@@ -47,7 +47,7 @@ Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy te
 
  Myślę, że elementami specjalnymi mojego programu jest użycie dekoratorów, algorytmu BFS przeszukiwania grafu oraz zapisywanie,  wczytywanie z pliku .json. oraz korzystanie z biblioteki sqlite3, czyli importowanie bazy oraz operowanie na niej.
 
-## **Opisane linki do istotnych fragmentów kodu:**
+## **Opisane linki do istotnych fragmentów kodu**
 
 1.	Lambda
 2.	List comprehensions
