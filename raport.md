@@ -27,7 +27,10 @@ Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy te
 
  - **Udało się**
  
-Udało się zrealizować główne cele – czyli wyszukiwanie połaczeń pośrednich (za pomocą przeszukiwania grafu), bezpośrednich i obliczanie kosztów podróży (przy pomocy dekoratorów). 
+Udało się zrealizować główne cele,czyli:
+[x] wyszukiwanie połaczeń pośrednich (za pomocą przeszukiwania grafu), 
+[x] wyszukiwanie połączeń bezpośrednich 
+[x] obliczanie kosztów podróży (przy pomocy dekoratorów). 
 
 - **Napotkane problemy:**
 
