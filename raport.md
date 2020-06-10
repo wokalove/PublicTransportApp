@@ -2,7 +2,7 @@
 
 ## **Założenia**
 Ogólnym założeniem mojego projektu było wyszukiwanie połączeń tramwajowych i autobusowych na podstawie bazy MPK Kraków z 2012 roku (**niestety bardziej aktualna wersja nie była dostępna**) oraz policzenie kosztów podróży.
-Do realizacji tego zadania musiałam zaimplementować funkcje wyszukujące połączenia zarówno bezpośrednie jak i pośrednie. W obu przypadkach musiałam wczytać pobraną bazę danych MPK Kraków  i następnie napisać zapytania do niej (używałam w tym celu biblioteki sqlite3).
+Do realizacji tego zadania musiałam zaimplementować funkcje wyszukujące połączenia zarówno bezpośrednie jak i pośrednie. W obu przypadkach musiałam wczytać pobraną bazę danych MPK Kraków  i następnie napisać zapytania do niej (używałam w tym celu biblioteki ```sqlite3```).
 
  ## **Ogólny opis kodu**
  
@@ -17,7 +17,7 @@ _Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowała
 
 ### **Algorytm połączenia pośredniego**
 1.	Użytkownik wpisuje skąd i dokąd chce jechać.
-2.	Tworzony jest graf { nr_ lini: kolejne_przystanki} – warto zwrócić uwagę na fakt, że z uwagi na wydajność programu postanowiłam dokonać jednokrotnego zapisu do pliku .json tego grafu.
+2.	Tworzony jest graf ```{ nr_ lini: kolejne_przystanki}``` – warto zwrócić uwagę na fakt, że z uwagi na wydajność programu postanowiłam dokonać jednokrotnego zapisu do pliku ```.json``` tego grafu.
 3.	Odczytywanie wyżej wymieniononego grafu w programie i tworzenie na jego bazie nowego, a mianowicie połączenia danych linii pomiędzy parami sąsiednich przystanków.
 4.	Następnie korzystam z algorytmu BFS do przeszukiwania grafu i optymalnej drogi do celu.
 5.	Użytkownikowi po wciśnięciu „ show stops ” ukazują się połączenia wraz z poszczególnymi liniami sugerujące w których miejscach należy dokonać przesiadki.
@@ -56,5 +56,8 @@ Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy te
 3.	Klasy
 4.	Wyjątki
 5.	Moduły
+6. Dekoratory
+7. Algorytm BFS
+8. Zapis danych z bazy MPK do pliku .json 
 
 Wszystkie linki zawarłam w [jednym issue](https://github.com/wokalove/MPK/issues/3).
