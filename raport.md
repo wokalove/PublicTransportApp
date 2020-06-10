@@ -43,7 +43,7 @@ Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy te
 
  * Problemy również napotkałam przy połączeniu algorytmu BFS w dojazdach pośrednich z racji tego, że oprócz tego, że musiałam stworzyć nowy graf na podstawie wcześniej stworzonego to musiałam dodatkowo go uaktualniać, żeby dodać numery liniii do poszczególnych kluczy, które były niezbędne do informowania użytkownika, którymi liniami dojedzie do celu.
 
- * Napisłam testy do klasy Traveler i Pan Dr Ciura dodatkowo zlecił dopisanie dwóch testów do funkcji find_shortest_path , czyli do funkcji wyszukującej połączenia bezpośrednie. Z testami raczej nie napotkałam większych problemów i wyniki wychodziły zgodne z oczekiwanymi.
+ * Napisłam testy do klasy Traveler i Pan Dr Ciura dodatkowo zlecił dopisanie [dwóch testów](https://github.com/wokalove/MPK/blob/fad59ae73571b25d7cc4bfb47326455638e8b193/MPK_test.py#L14-L31) do funkcji [```find_shortest_path()```](https://github.com/wokalove/MPK/blob/ad8acbab0cdb53dfb2e73d09f0366ebcb6e627ce/MPK.py#L480-L497), czyli do funkcji wyszukującej połączenia bezpośrednie. Z testami raczej nie napotkałam większych problemów i wyniki wychodziły zgodne z oczekiwanymi.
 
 ### **Elementy specjalne**
 
