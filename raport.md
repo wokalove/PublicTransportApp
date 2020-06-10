@@ -1,10 +1,10 @@
-### ****RAPORT Z PROJEKTU POŁĄCZENIA MPK KRAKÓW***
+# ***RAPORT Z PROJEKTU POŁĄCZENIA MPK KRAKÓW***
 
-- **Założenia**
+## **Założenia**
 Ogólnym założeniem mojego projektu było wyszukiwanie połączeń tramwajowych i autobusowych na podstawie bazy MPK Kraków z 2012 roku (niestety bardziej aktualna wersja nie była dostępna) oraz policzenie kosztów podróży.
 Do realizacji tego zadania musiałam zaimplementować funkcje wyszukujące połączenia zarówno bezpośrednie jak i pośrednie. W obu przypadkach musiałam wczytać pobraną bazę danych MPK Kraków  i następnie napisać zapytania do niej (używałam w tym celu biblioteki sqlite3).
 
- - **Ogólny opis kodu**
+ ## **Ogólny opis kodu**
  
 - Algorytm połączenia bezpośredniego:
 1. Użytkownik wpisuje skąd i dokąd chce jechać. 
@@ -23,7 +23,7 @@ Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowałam
 Oprócz realizacji połączeń są obliczane koszty podróży – biorę  pod uwagę tylko bilety jednoprzejazdowe z racji tego, że w bazie danych MPK Kraków brakuje czasu odjazdów i przyjazdów.
 Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy też dorosłym. Jeśli chodzi o połączenia bezpośrednie to bilet nalicza się raz z racji, że jest jeden przejazd. W przypadku połączenia pośredniego biletów jest więcej i koszty się sumują z racji tego, że dojazd już jest kilkuprzejazdowy.
 
-- **Co udało się zrobić, problemy, elementy specjalne , problemy z testami**
+## **Co udało się zrobić, problemy, elementy specjalne , problemy z testami**
 
  - Udało się
  
@@ -42,7 +42,7 @@ Napisłam testy do klasy Traveler i Pan Dr Ciura dodatkowo zlecił dopisanie dw�
 
 Myślę, że elementami specjalnymi mojego programu jest użycie dekoratorów, algorytmu BFS przeszukiwania grafu oraz zapisywanie,  wczytywanie z pliku .json. oraz korzystanie z biblioteki sqlite3, czyli importowanie bazy oraz operowanie na niej.
 
-- **Opisane linki do istotnych fragmentów kodu:**
+## **Opisane linki do istotnych fragmentów kodu:**
 1.	Lambda
 2.	List comprehensions
 3.	Klasy
