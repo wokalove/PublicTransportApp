@@ -48,4 +48,5 @@ Myślę, że elementami specjalnymi mojego programu jest użycie dekoratorów, a
 3.	Klasy
 4.	Wyjątki
 5.	Moduły
-Wszystkie linki zawarłam w [jednym issue](https://github.com/wokalove/MPK/issues/3)
+
+Wszystkie linki zawarłam w [jednym issue](https://github.com/wokalove/MPK/issues/3).
