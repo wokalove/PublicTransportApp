@@ -23,7 +23,7 @@ _Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowała
 5.	Użytkownikowi po wciśnięciu „ show stops ” ukazują się połączenia wraz z poszczególnymi liniami sugerujące w których miejscach należy dokonać przesiadki.
 
 _Oprócz realizacji połączeń są obliczane koszty podróży – biorę  pod uwagę tylko bilety jednoprzejazdowe z racji tego, że w bazie danych MPK Kraków brakuje czasu odjazdów i przyjazdów.
-Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy też dorosłym. Jeśli chodzi o połączenia bezpośrednie to bilet nalicza się raz z racji, że jest jeden przejazd. W przypadku połączenia pośredniego biletów jest więcej i koszty się sumują z racji tego, że dojazd już jest kilkuprzejazdowy._
+Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy też dorosłym. Jeśli chodzi o połączenia bezpośrednie to bilet nalicza się raz z racji, że jest jeden przejazd. W przypadku połączenia pośredniego biletów jest więcej i koszty się sumują dlatego, że dojazd już jest kilkuprzejazdowy._
 
 ## **Co udało się zrobić, problemy, elementy specjalne, problemy z testami**
 
