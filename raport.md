@@ -21,6 +21,7 @@ _Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowała
 3.	Odczytywanie wyżej wymieniononego grafu w programie i tworzenie na jego bazie nowego, a mianowicie połączenia danych linii pomiędzy parami sąsiednich przystanków.
 4.	Następnie korzystam z algorytmu BFS do przeszukiwania grafu i optymalnej drogi do celu.
 5.	Użytkownikowi po wciśnięciu „ show stops ” ukazują się połączenia wraz z poszczególnymi liniami sugerujące w których miejscach należy dokonać przesiadki.
+
 _Oprócz realizacji połączeń są obliczane koszty podróży – biorę  pod uwagę tylko bilety jednoprzejazdowe z racji tego, że w bazie danych MPK Kraków brakuje czasu odjazdów i przyjazdów.
 Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy też dorosłym. Jeśli chodzi o połączenia bezpośrednie to bilet nalicza się raz z racji, że jest jeden przejazd. W przypadku połączenia pośredniego biletów jest więcej i koszty się sumują z racji tego, że dojazd już jest kilkuprzejazdowy._
 
