@@ -12,7 +12,8 @@ Do realizacji tego zadania musiałam zaimplementować funkcje wyszukujące poł�
 3. Użytkownik wybiera numer linii, którą chce dojechać do celu.
 4.  Następuje zapytanie do bazy o wypisanie kolejnych przystanków wpisanej linii.
 5.  Wyświetlenie ile przystanków dzieli podróżnika do celu.
-Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowałam sprawdzanie indeksu danego przystanku. Jeśli indeks przystanku „skąd” był wyższy niż „dokąd” to  przystanki wypisują się w odwrotnej kolejności, w przeciwnym wypadku – w takiej jakiej są.
+
+_Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowałam sprawdzanie indeksu danego przystanku. Jeśli indeks przystanku „skąd” był wyższy niż „dokąd” to  przystanki wypisują się w odwrotnej kolejności, w przeciwnym wypadku – w takiej jakiej są._
 
 ### **Algorytm połączenia pośredniego**
 1.	Użytkownik wpisuje skąd i dokąd chce jechać.
@@ -20,8 +21,8 @@ Aby algorytm działał w obie strony ( dojazdy w tę i z powrotem) zastosowałam
 3.	Odczytywanie wyżej wymieniononego grafu w programie i tworzenie na jego bazie nowego, a mianowicie połączenia danych linii pomiędzy parami sąsiednich przystanków.
 4.	Następnie korzystam z algorytmu BFS do przeszukiwania grafu i optymalnej drogi do celu.
 5.	Użytkownikowi po wciśnięciu „ show stops ” ukazują się połączenia wraz z poszczególnymi liniami sugerujące w których miejscach należy dokonać przesiadki.
-Oprócz realizacji połączeń są obliczane koszty podróży – biorę  pod uwagę tylko bilety jednoprzejazdowe z racji tego, że w bazie danych MPK Kraków brakuje czasu odjazdów i przyjazdów.
-Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy też dorosłym. Jeśli chodzi o połączenia bezpośrednie to bilet nalicza się raz z racji, że jest jeden przejazd. W przypadku połączenia pośredniego biletów jest więcej i koszty się sumują z racji tego, że dojazd już jest kilkuprzejazdowy.
+_Oprócz realizacji połączeń są obliczane koszty podróży – biorę  pod uwagę tylko bilety jednoprzejazdowe z racji tego, że w bazie danych MPK Kraków brakuje czasu odjazdów i przyjazdów.
+Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy też dorosłym. Jeśli chodzi o połączenia bezpośrednie to bilet nalicza się raz z racji, że jest jeden przejazd. W przypadku połączenia pośredniego biletów jest więcej i koszty się sumują z racji tego, że dojazd już jest kilkuprzejazdowy._
 
 ## **Co udało się zrobić, problemy, elementy specjalne, problemy z testami**
 
@@ -45,7 +46,7 @@ Bilety są ulgowe i normalne – użytkownik wpisuje,czy jest studentem , czy te
 
 ### **Elementy specjalne**
 
- Myślę, że elementami specjalnymi mojego programu jest użycie dekoratorów, algorytmu BFS przeszukiwania grafu oraz zapisywanie,  wczytywanie z pliku .json. oraz korzystanie z biblioteki sqlite3, czyli importowanie bazy oraz operowanie na niej.
+ Myślę, że elementami specjalnymi mojego programu jest użycie **dekoratorów, algorytmu BFS przeszukiwania grafu oraz zapisywanie,  wczytywanie z pliku .json. oraz korzystanie z biblioteki sqlite3**, czyli importowanie bazy oraz operowanie na niej.
 
 ## **Opisane linki do istotnych fragmentów kodu**
 
